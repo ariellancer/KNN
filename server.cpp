@@ -8,8 +8,8 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
-#include "extractFunc.h"
-#include "knn_implement.h"
+#include "server/extractFunc.h"
+#include "server/knn_implement.h"
 
 using namespace std;
 

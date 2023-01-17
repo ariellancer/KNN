@@ -4,12 +4,12 @@
 #include <iostream>
 #include <stdexcept>
 #include <fstream>
-#include "Vector.h"
+#include "server/Vector.h"
 #include <string.h>
 #include <sstream>
-#include "euclideanDistance.h"
-#include "canberraDistance.h"
-#include "chebyshevDistance.h"
+#include "server/euclideanDistance.h"
+#include "server/canberraDistance.h"
+#include "server/chebyshevDistance.h"
 #include "minkowskiDistance.h"
 #include "taxicabGeometry.h"
 
