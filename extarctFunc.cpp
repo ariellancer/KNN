@@ -66,7 +66,8 @@ Vector initializationOfVector(char *str, int size) {
         counter++;
         temp = strtok(NULL, ",");
     }
-    throw invalid_argument("invalid vector");
+    //throw invalid_argument("invalid vector");
+    return vector;
 }
 
 
@@ -78,11 +79,14 @@ Vector initializationOfVector(char *str, int size) {
 int getNumberOfNeighbors(char* str){
 
     int num=atoi(str);
+    if(num!=(int)str){
+        return -1;
+    }
     if(num==0){
         if(strcmp(str,"0")==0){
             return num;
         }else{
-            throw invalid_argument("invalid number of neighbors");
+            return -1;
         }
     }
     return num;
@@ -109,34 +113,31 @@ int getSize(char* arr){
  * @param path
  * @return
  */
-vector<Vector> initializingTheVectors(char * path){
+vector<Vector> initializingTheVectors(std::string input){
     int lengthOfVector;
     bool check=false;
     string data;
     Vector vec;
     vector<Vector> arrayOfVectors;
-
-    ifstream infile;
-    infile.open((path));
-    if (infile.is_open()) {
-        while (infile) {
-            getline(infile,data);
-            char arr[data.length()+1];
-            strcpy(arr,data.c_str());
-            if(!check){
-                char copy[data.length()+1];
-                strcpy(copy,data.c_str());
-                lengthOfVector= getSize(copy);
-                check= true;
-            }
-
-            vec= initializationOfVector(arr,lengthOfVector);
-
-            if(vec.vec.size()!=lengthOfVector){
-                throw invalid_argument ("the length of a vector is not valid");
-            }
-            arrayOfVectors.push_back(vec);
+    stringstream s(input);
+   // ifstream infile;
+   // infile.open((path));
+    while (getline(s,data)){
+        char arr[data.length()+1];
+        strcpy(arr,data.c_str());
+        if(!check){
+            char copy[data.length()+1];
+            strcpy(copy,data.c_str());
+            lengthOfVector= getSize(copy);
+            check= true;
         }
+
+        vec= initializationOfVector(arr,lengthOfVector);
+
+        if(vec.vec.size()!=lengthOfVector){
+            throw invalid_argument ("the length of a vector is not valid");
+        }
+        arrayOfVectors.push_back(vec);
     }
     return arrayOfVectors;
 }
