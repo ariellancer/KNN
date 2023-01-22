@@ -8,12 +8,12 @@
 #define ASS_41_FIFTH_COMMAND_H
 
 
-class download:: public Command {
+class download: public Command {
 private:
-    Data_Command dataCommand;
+    Data_Command* dataCommand;
 public:
     void execute() override;
-    download(Data_Command &dc);
+    download(Data_Command * dc);
 };
 
 

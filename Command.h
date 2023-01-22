@@ -13,15 +13,9 @@ protected:
     DefaultIO* dio;
 public://:Command
     virtual void execute()=0;
-    void setDescription(string str){
-        this->description=str;
-    }
-    void setDio(DefaultIO* dio){
-        this->dio=dio;
-    }
-    std::string getDescription(){
-        return this->description;
-    }
+    void setDescription(std::string str);
+    void setDio(DefaultIO* dio);
+    std::string getDescription();
 
 };
 

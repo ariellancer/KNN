@@ -5,5 +5,14 @@
 #include "DefaultIO.h"
 #include <iostream>
 
+void Command::setDescription(std::string str) {
+    this->description=str;
+}
 
+void Command::setDio(DefaultIO *dio) {
+        this->dio=dio;
+}
+std::string Command:: getDescription(){
+    return this->description;
+}
 

@@ -8,12 +8,12 @@
 #define ASS_41_THIRD_COMMAND_H
 
 
-class classify:: public Command {
+class classify: public Command {
 private:
-Data_Command dataCommand;
+Data_Command *dataCommand;
 public:
 void execute() override;
-classify(Data_Command &dc);
+    classify(Data_Command *dc);
 };
 
 

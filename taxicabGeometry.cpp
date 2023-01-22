@@ -2,7 +2,7 @@
 // Created by ariel on 12/8/22.
 //
 
-#include "client/taxicabGeometry.h"
+#include "taxicabGeometry.h"
 #include <cmath>
 using namespace std;
 

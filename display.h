@@ -8,11 +8,12 @@
 #define ASS_41_FORTH_COMMAND_H
 
 
-class display:: public Command {
+class display: public Command {
 private:
-Data_Command dataCommand;
+    Data_Command *dataCommand;
 public:
-void execute() override;
+    void execute() override;
+    display(Data_Command *dc);
 
 };
 

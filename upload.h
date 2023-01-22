@@ -16,11 +16,11 @@
  */
 class upload: public Command{
 private:
-    Data_Command dataCommand;
+    Data_Command* dataCommand;
     std::vector<Vector> vec;
 public:
     void execute() override;
-    upload(Data_Command &dc);
+    upload(Data_Command *dataCommand);
 
 };
 

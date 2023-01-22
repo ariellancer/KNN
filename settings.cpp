@@ -25,16 +25,18 @@ using namespace std;
 //    return this->numOfNeighbors;
 //}
 
-settings:: settings(Data_Command &dc){
+settings:: settings(Data_Command *dc){
     this->numOfNeighbors=5;
     this->nameOfFunction="AUC";
     this->dataCommand=dc;
     setDescription("2. algorithm settings\n");
 }
 
-bool settings:: good(string str){
-    if(strcmp(str,"AUC")==0|| strcmp(str,"MAN")==0||strcmp(str,"CHB")==0||strcmp(str,"CAN")==0||
-    strcmp(nameOfFunction,"MIN")==0){
+bool settings:: good(std::string str){
+    char arr[str.length()+1];
+    strcpy(arr,str.c_str());
+    if(strcmp(arr,"AUC")==0|| strcmp(arr,"MAN")==0||strcmp(arr,"CHB")==0||strcmp(arr,"CAN")==0||
+    strcmp(arr,"MIN")==0){
         return true;
     }
     return false;
@@ -48,7 +50,9 @@ void settings::initializeValues(std::string input) {
     stringstream s(input);
     while (getline(s,temp,' ')){
         if (flag==0){
-            k=getNumberOfNeighbors(temp);
+            char arr[temp.length()+1];
+            strcpy(arr,temp.c_str());
+            k=getNumberOfNeighbors(arr);
             if(k==-1){
                 validK= false;
             }
@@ -64,34 +68,43 @@ void settings::initializeValues(std::string input) {
             flag++;
             continue;
         }else{
-            dio.write("invalid input\n");
+            dio->write("invalid input\n");
             return;
         }
     }
     if(validK== true&&validName== true){
-        numOfNeighbors=k;
-        nameOfFunction=name;
+        this->numOfNeighbors=k;
+        this->nameOfFunction=name;
         return;
     }
     if(!validK){
-        dio.write("invalid value for K\n");
+
         if ((!validName)){
-            dio.write("invalid value for metric\n");
+            dio->write("invalid value for K\n");
+            dio->write("invalid value for metric\n");
         }
+        dio->write("invalid value for K\n");
         return;
     }
-    dio.write("invalid value for metric\n");
+    dio->write("invalid value for metric\n");
 }
 
 void settings::execute() {
-    string str= "The current KNN parameters are: K = "+ this->numOfNeighbors+", distance metric = " +this->nameOfFunction;
+    string str,str1,str2,str3,str4;
+    str1="The current KNN parameters are: K = ";
+    str2= to_string(this->numOfNeighbors);
+    str3=", distance metric = ";
+    str4= this->nameOfFunction;
+    str=str1+str2+str3+str4;
     dio->write(str);
     string input= dio->read();
-    if(strcmp(input,"\n")){
+    char data[input.length()+1];
+    strcpy(data,input.c_str());
+    if(strcmp(data,"\n")==0){
         return;
     } else{
         settings::initializeValues(input);
-        this->dataCommand.setNameOfFunction(this->nameOfFunction);
-        this->dataCommand.setNumOfNeighbors(this->numOfNeighbors);
+        this->dataCommand->setNameOfFunction(this->nameOfFunction);
+        this->dataCommand->setNumOfNeighbors(this->numOfNeighbors);
     }
 }

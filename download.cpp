@@ -16,7 +16,7 @@
 #include <stdlib.h>
 
 using namespace std;
-download::download(Data_Command & dc){
+download::download(Data_Command * dc){
     this->dataCommand=dc;
     setDescription("5. download results\n");
 }
@@ -24,21 +24,22 @@ download::download(Data_Command & dc){
 void download:: execute(){
     std::string s;
     int x;
-    char * intStr;
-    if(!dataCommand.checkUploaded()){
-        dio.write("please upload data");
+    string intStr;
+    if(!dataCommand->checkUploaded()){
+        dio->write("please upload data");
         return;
     }
-    if(!dataCommand.checkClassified()){
-        dio.write("please classify the data");
+    if(!dataCommand->checkClassified()){
+        dio->write("please classify the data");
         return;
     }
-    for(i=0;i<dataCommand.getUnclassified().size();i++){
+    for(int i=0;i<dataCommand->getUnclassified().size();i++){
         x=i+1;
-        intStr=itoa(x);
-        s=string (intStr);
+
+        intStr= to_string(x);
+        s=intStr;
         s=s.append(" ");
-        s=s.append(dataCommand.getUnclassified().at(i).type);
+        s=s.append(dataCommand->getUnclassified().at(i).type);
         s=s.append("\n");
         dio->write(s);
     }

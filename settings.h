@@ -10,16 +10,17 @@
 #define ASS_41_SECOND_COMMAND_H
 
 
-class settings::public Command {
+class settings:public Command {
 private:
-    Data_Command dataCommand;
+    Data_Command *dataCommand;
     int numOfNeighbors;
     std::string nameOfFunction;
-    void initializeValues(string input);
-    bool good(string str);
+    void initializeValues(std::string input);
+    bool good(std::string str);
 public:
     void execute() override;
-    settings(Data_Command & dataCommand);
+    settings(Data_Command *dc);
+
   // void setNumOfNeighbors(int k);
   // void setNameOfFunction(std::string str);
   // std::string getNameOfFunction();

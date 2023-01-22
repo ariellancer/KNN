@@ -8,9 +8,12 @@
 #define ASS_41_STANDARD_IO_H
 
 
-class Standard_IO::public DefaultIO {
+class Standard_IO:public DefaultIO {
+public:
 std::string read() override;
 void write(std::string str) override;
+void Close()override;
+Standard_IO();
 };
 
 
