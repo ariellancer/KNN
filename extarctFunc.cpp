@@ -4,12 +4,12 @@
 #include <iostream>
 #include <stdexcept>
 #include <fstream>
-#include "server/Vector.h"
+#include "Vector.h"
 #include <string.h>
 #include <sstream>
-#include "server/euclideanDistance.h"
-#include "server/canberraDistance.h"
-#include "server/chebyshevDistance.h"
+#include "euclideanDistance.h"
+#include "canberraDistance.h"
+#include "chebyshevDistance.h"
 #include "minkowskiDistance.h"
 #include "taxicabGeometry.h"
 
@@ -77,11 +77,14 @@ Vector initializationOfVector(char *str, int size) {
  * @return number of neighbors.
  */
 int getNumberOfNeighbors(char* str){
-
-    int num=atoi(str);
-    if(num!=(int)str){
-        return -1;
+    string s=str;
+    for (int i = 0; i <s.length() ; ++i) {
+        if(isdigit(s[i])== false){
+            return -1;
+        }
     }
+    int num=atoi(str);
+
     if(num==0){
         if(strcmp(str,"0")==0){
             return num;
@@ -107,6 +110,24 @@ int getSize(char* arr){
     }
     return counter-1;
 }
+
+/**
+ * The function is in charge of checking the number of values there are in the vector that is represented
+ * with an array of chars.
+ * @param arr
+ * @return the number of values.
+ */
+int getSize2(char* arr){
+    char * temp;
+    int counter=0;
+    temp= strtok(arr,",");
+    while (temp){
+        counter++;
+        temp= strtok(NULL,",");
+    }
+    return counter;
+}
+
 /**
  * The function is in charge of initializing the the file we got from the user so we could run on the vectors
  * in the file the KNN.
@@ -142,6 +163,40 @@ vector<Vector> initializingTheVectors(std::string input){
     return arrayOfVectors;
 }
 
+/**
+ * The function is in charge of initializing the the file we got from the user so we could run on the vectors
+ * in the file the KNN.
+ * @param path
+ * @return
+ */
+vector<Vector> initializingTheVectors2(std::string input){
+    int lengthOfVector;
+    bool check=false;
+    string data;
+    Vector vec;
+    vector<Vector> arrayOfVectors;
+    stringstream s(input);
+    // ifstream infile;
+    // infile.open((path));
+    while (getline(s,data)){
+        char arr[data.length()+1];
+        strcpy(arr,data.c_str());
+        if(!check){
+            char copy[data.length()+1];
+            strcpy(copy,data.c_str());
+            lengthOfVector= getSize2(copy);
+            check= true;
+        }
+
+        vec= initializationOfVector(arr,lengthOfVector);
+
+        if(vec.vec.size()!=lengthOfVector){
+            throw invalid_argument ("the length of a vector is not valid");
+        }
+        arrayOfVectors.push_back(vec);
+    }
+    return arrayOfVectors;
+}
 /**
  * This function is in charge to check what distance method the user wants to run the KNN with' and return
  * an object of the wanted method.

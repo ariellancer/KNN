@@ -8,13 +8,19 @@
 using namespace std;
 
 
-string read(){
-    string str;
-    getline(cin,str);
-    return str;
+std::string Standard_IO:: read(){
+        string str;
+        getline(cin,str);
+        return str;
 }
-void write(std::string str){
+void Standard_IO:: write(std::string str){
     cout<<str<<endl;
+}
+void Standard_IO::Close() {
+    return;
+}
+Standard_IO::Standard_IO() {
+    return;
 }
 
 

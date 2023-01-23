@@ -2,7 +2,7 @@
 // Created by ariel on 12/8/22.
 //
 
-#include "client/minkowskiDistance.h"
+#include "minkowskiDistance.h"
 #include <math.h>
 using namespace std;
 

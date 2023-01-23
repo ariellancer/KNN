@@ -5,9 +5,9 @@
 #include "finish.h"
 
 finish::finish(){
-    setDescription("8. exit\n");
+    setDescription("8. exit");
 }
 
 void finish:: execute(){
-    dio->close();
+    dio->Close();
 }

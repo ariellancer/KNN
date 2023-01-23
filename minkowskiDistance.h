@@ -1,7 +1,7 @@
 //
 // Created by ariel on 12/8/22.
 //
-#include "server/Distance.h"
+#include "Distance.h"
 #ifndef EX_2MITKADEM_MINKOWSKIDISTANCE_H
 #define EX_2MITKADEM_MINKOWSKIDISTANCE_H
 

@@ -9,10 +9,10 @@
 
 class CLI {
 private:
-    DefaultIO dio;
+    DefaultIO* dio;
 public:
     void start();
-    CLI(DefaultIO dio);
+    CLI(DefaultIO* dio);
 };
 
 

@@ -7,7 +7,7 @@
 #define ASS_41_EXIT_H
 
 
-class finish:: public Command {
+class finish: public Command {
 public:
     void execute()override;
     finish();
