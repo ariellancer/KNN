@@ -72,6 +72,10 @@ void settings::initializeValues(std::string input) {
             return;
         }
     }
+    if(flag==1){
+        dio->write("invalid input\n");
+        return;
+    }
     if(validK== true&&validName== true){
         this->numOfNeighbors=k;
         this->nameOfFunction=name;
