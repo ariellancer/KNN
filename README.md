@@ -1,10 +1,16 @@
 # ass_4
 Advanced programming project. The fourth exercise in the course, we were asked to implement a server that runs the KNN algorithm for several clients at the same time according to the number of neighbors and the distance calculation method provided by the client (as we will explain later there is a default value that the client can choose to change). The "flow" of the program is as follows: the server is initialized at the beginning of the program with the port number of the client. Now the server will send the menu to the client and the user can choose an option from the menu.
+
 Option 1: The user will enter a path to his local CSV file, the client will send the contents of the file to the server (the file is the "classified" vectors). The server will then send back to the client that the UPLOAD is complete. Then the process will repeat for a path to the unclassified vector file.
+
 Option 2: The server will send the current classifier parameter values which are the K parameter value and the current distance metric. The customer can now choose to change the K value and the distance metric or leave it unchanged.
+
 Option 3: The server will run the algorithm on the CSV files uploaded earlier.
+
 Option 4: The server will return the list of classifications.
+
 Option 5: The behavior will be similar to that of option 4, except that instead of printing the results, the user will enter a path to create the file locally and there the client will save the results (the writing process reads in a separate THREAD).
+
 Option 8: The interaction between the server and the client will end.
 In any of the options, entering an invalid value or requesting an action before its time will result in an error acknowledgment being printed.
 
