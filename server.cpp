@@ -8,19 +8,26 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <string.h>
-#include "extractFunc.h"
-#include "knn_implement.h"
-#include "DefaultIO.h"
-#include "Standard_IO.h"
-#include "SocketIO.h"
-#include "CLI.h"
+#include "Server/extractFunc.h"
+#include "Server/knn_implement.h"
+#include "Server/DefaultIO.h"
+#include "Server/Standard_IO.h"
+#include "Server/SocketIO.h"
+#include "Server/CLI.h"
+#include <thread>
+
+
 
 using namespace std;
+void run(int client_sock){
+    DefaultIO *dio = new SocketIO(client_sock);
+    CLI *cli = new CLI(dio);
+    cli->start();
+}
+
 
 int main(int argc, char **argv) {
-
     const int server_port = extractPort(argv[1]);  //the port
- //   vector<Vector> arrayOfVectors = initializingTheVectors(argv[1]); //all the vectors in the data
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
         perror("error creating socket");
@@ -39,25 +46,17 @@ int main(int argc, char **argv) {
     if (listen(sock, 5) < 0) {
         perror("error listening to a socket");
     }
-  // while (true) {
-  //     struct sockaddr_in client_sin = {0};
-  //     unsigned int addr_len = sizeof(client_sin);
-  //     int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
-  //     if (client_sock < 0) {
-  //         perror("error accepting client");
-  //     }
+   while (true) {
+       struct sockaddr_in client_sin = {0};
+       unsigned int addr_len = sizeof(client_sin);
+       int client_sock = accept(sock, (struct sockaddr *) &client_sin, &addr_len);
+       if (client_sock < 0) {
+           perror("error accepting client");
+       }
+       thread run1(run,client_sock);
+       run1.detach();
 
-  //     DefaultIO dio = new SocketIO(client_sock);
-  //     CLI cli = new CLI(dio);
-  //     cli.start();
-  // }
-
-    DefaultIO* dio = new Standard_IO();
-    CLI *cli = new CLI(dio);
-    cli->start();
-
-
-
+   }
 
 
     //  char buffer[4096] = {0};
