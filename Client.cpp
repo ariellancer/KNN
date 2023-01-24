@@ -11,10 +11,33 @@
 #include <string.h>
 #include <vector>
 #include <sstream>
-#include "extractFunc.h"
-#include "SocketIO.h"
+#include "Server/extractFunc.h"
+#include "Server/SocketIO.h"
+#include "Server/Standard_IO.h"
+#include <fstream>
+#include <cstdlib>
+#include <thread>
 
 using namespace std;
+using std::ofstream;
+
+    void run(string receive,string path ){
+      fstream stream;
+      string token,delimiter="\n";
+      size_t pos=0;
+      stream.open(path,ios::out);
+ //todo
+ 
+      while ((pos=receive.find(delimiter))!= std::string::npos){
+         token=receive.substr(0,pos);
+         stream<<token<<endl;
+         receive.erase(0,pos+delimiter.length());
+        }
+                  //  stream<<receive<<endl;
+      stream.close();
+
+
+}
 
 
 int main(int argc,char **argv){
@@ -34,131 +57,159 @@ int main(int argc,char **argv){
         perror("error connecting to server");
         return 0;
     }
-    SocketIO *s = new SocketIO(port_no);
+    Standard_IO *prints=new Standard_IO();
+    SocketIO *socketIo = new SocketIO(sock);
+    string menu = socketIo->read();
+    int choice;
     while (true) {
         //print the manu
-        string str = s->read();
-        cout << str << endl;
+       // string menu = s->read();
+        prints->write(menu);
         //scan the choice
-        int choice;
-        //int choice = stoi(s->read());
-        cin >> choice;
-        string receive, localTrain, localTest, parameters;
+        string input=prints->read();
+   try {
+       choice= stoi(input);
+   }catch (exception e){
+       prints->write("invalid input");
+       break;
+   }
+   int counter=0;
+        ifstream infile,testfile;
+         fstream stream;
+        string receive, localTrain, localTest, parameters,temp,temp2,line,path,token,delimiter="\n";
+        size_t pos=0;
+       // thread run1;
         char *str_inp1, *str_inp2;
         switch (choice) {
 
             case 1:
-                s->write("1");
-                receive = s->read();
-                cout << receive << endl;
+                socketIo->write("1$");
+                receive = socketIo->read();
+                prints->write(receive);
+                localTrain=prints->read();
+
                 //get the local train CSV file
-                cin >> localTrain;
-                s->write(localTrain);
-                receive = s->read();
-                cout << receive << endl;
-                //if we receive invalid input than break.
-                str_inp1 = "invalid input";
-                str_inp2 = new char[receive.length() + 1];
-                strcpy(str_inp2, receive.c_str());
-                if (strcmp(str_inp1, str_inp2) == 0) {
+                infile.open(localTrain);
+                if(!infile){
+                    prints->write("invalid input");
+                    socketIo->write("close$");
                     break;
                 }
-                //get the local test CSV file
-                receive = s->read();
-                cout << receive << endl;
-                cin >> localTest;
-                s->write(localTest);
-                //todo we need to send Upload complete also in the second time!!
-                receive = s->read();
-                cout << receive << endl;
+                while (getline(infile,line)){
+                  //  line.append("\n");
+                    temp=temp.append(line);
+                    temp=temp.append("\n");
+                    counter++;
+                  //  socketIo->write("\n");
+                }
+                temp=temp.append("$");
+                socketIo->write(temp);
+
+                //socketIo->write("$");
+                receive = socketIo->read();
+                if (receive.compare("invalid input")==0){
+                    prints->write(receive);
+                    break;
+                }
+                prints->write(receive);
+                // ack on first part
+                socketIo->write("$");
+                //next part
+                receive=socketIo->read();
+                prints->write(receive);
+                localTest=prints->read();
+                testfile.open(localTest);
+                if(!testfile){
+                    prints->write("invalid input");
+                    socketIo->write("close$");
+
+                    break;
+                }
+                while (getline(testfile,line)){
+                    temp2=temp2.append(line);
+                    temp2=temp2.append("\n");
+                    counter++;
+
+                   // socketIo->write("\n");
+                }
+                socketIo->write(temp2);
+                socketIo->write("$");
+                receive = socketIo->read();
+                if (receive.compare("invalid input")==0){
+                    prints->write(receive);
+                    break;
+                }
                 break;
+
+
             case 2:
-                s->write("2");
-                receive = s->read();
-                cout << receive << endl;
+                socketIo->write("2$");
+                receive = socketIo->read();
+                prints->write(receive);
                 //get the KNN parameters
-                cin >> parameters;
-                s->write(parameters);
-                receive = s->read();
-                //if we receive invalid input than break.
-                str_inp1 = "invalid value for K";
-                str_inp2 = new char[receive.length() + 1];
-                strcpy(str_inp2, receive.c_str());
-                if (strcmp(str_inp1, str_inp2) == 0) {
-                    cout << receive << endl;
-                    receive = s->read();
-                    str_inp1 = "invalid value for metric";
-                    str_inp2 = new char[receive.length() + 1];
-                    strcpy(str_inp2, receive.c_str());
-                    if (strcmp(str_inp1, str_inp2) == 0) {
-                        cout << receive << endl;
-                    }else{
-                        break;
-                    }
+                parameters= prints->read();
+                socketIo->write(parameters);
+                socketIo->write("$");
+                receive = socketIo->read();
+                if(receive.compare("")==0){
+                    break;
+                } else{
+                    prints->write(receive);
+                    break;
                 }
-                str_inp1 = "invalid value for metric";
-                str_inp2 = new char[receive.length() + 1];
-                strcpy(str_inp2, receive.c_str());
-                if (strcmp(str_inp1, str_inp2) == 0) {
-                    cout << receive << endl;
-                }
-                break;
+
+
+
             case 3:
-                s->write("3");
-                receive = s->read();
-                cout << receive << endl;
+                socketIo->write("3$");
+                receive = socketIo->read();
+                prints->write(receive);
                 break;
             case 4:
-                s->write("4");
-                receive = s->read();
-                cout << receive << endl;
-                if (cin.get() == '\n') {
+                socketIo->write("4$");
+                receive = socketIo->read();
+                prints->write(receive);
+                if(receive.compare("please upload data")==0){
                     break;
                 }
+                receive=prints->read();
+                break;
             case 5:
                 //todo
-                s->write("5");
+                socketIo->write("5$");              
+                receive= socketIo->read();
+                if(receive.compare("")==0){
+                    path=prints->read();
+                    stream.open(path,ios::out);
+                if (!stream){
+                    socketIo->write("close$");
+                    prints->write("invalid input");
+                    break;
+                }
+                socketIo->write("$");
+                receive=socketIo->read();
+                thread run1(run,receive,path);
+                run1.detach();
+                
+
+                } else{
+                    prints->write(receive);
+                }
+
                 break;
             case 8:
                 // the server will close the connection
-                s->write("8");
-                break;
+                socketIo->write("8$");
+                close(sock);
+                return 0;
             default:
                 // the server will send invalid option.
-                s->write("9");
-                receive = s->read();
-                cout << receive << endl;
+                socketIo->write("9$");
+                receive = socketIo->read();
+                prints->write(receive);
+
                 break;
         }
     }
-    close(sock);
-    return 0;
+
 }
-    /*while (true){
-        string str;
-        getline(cin,str);
-        if(stop(str)){
-            close(sock);
-            return 0;
-        }
-        char data_addr[str.length()+1];
-        strcpy(data_addr,str.c_str());
-        int data_len=str.length()+1;
-        //char *data_addr=(char*) (str.c_str());
-        //int data_len= strlen(data_addr);
-        int sent_bytes= send(sock, data_addr, data_len,0);
-        if (sent_bytes<0){
-            perror("error sending to server");
-        }
-        char buffer[4096];
-        int expected_data_len= sizeof(buffer);
-        int read_bytes= recv(sock, buffer, expected_data_len,0);
-        if (read_bytes<0){
-            perror("error getting from server");
-        }
-        else{
-            cout << buffer<<"\n";
-        }
-    }
-    return 0;
-}*/
