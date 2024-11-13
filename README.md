@@ -1,4 +1,5 @@
-# ass_4
+# KNN
+
 Advanced programming project. The fourth exercise in the course, we were asked to implement a server that runs the KNN algorithm for several clients at the same time according to the number of neighbors and the distance calculation method provided by the client (as we will explain later there is a default value that the client can choose to change). The "flow" of the program is as follows: the server is initialized at the beginning of the program with the port number of the client. Now the server will send the menu to the client and the user can choose an option from the menu.
 
 Option 1: The user will enter a path to his local CSV file, the client will send the contents of the file to the server (the file is the "classified" vectors). The server will then send back to the client that the UPLOAD is complete. Then the process will repeat for a path to the unclassified vector file.
