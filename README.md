@@ -42,13 +42,13 @@ And in each of the options it waits for a different input
 
 # How to compile:
 First clone the repo.  
-Open a terminal type 'make' in the command line, witch will compile the project.
+Open a terminal type `make` in the command line, witch will compile the project.
 
 
-In order to clean the exe and o files type 'make clean' in command line.
+In order to clean the exe and o files type `make clean` in command line.
 
 # How to run:
 First clone the repo.  
-Open two terminals, on one of the terminals run the server with the command './server.out port', on the second terminal run the client with the
-command './client.out IP port'-were the IP is the IP of the computer where the server is on, and the port is the number 
+Open two terminals, on one of the terminals run the server with the command `./server.out port`, on the second terminal run the client with the
+command `./client.out IP port`-were the IP is the IP of the computer where the server is on, and the port is the number 
 of port which the server is listening on.  Then the client is waiting for an input from the user.
